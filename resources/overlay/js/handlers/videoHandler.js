@@ -19,7 +19,7 @@ function showVideo(data){
 	var videoDuration = parseInt(data.videoDuration) * 1000;
 	var videoVolume = data.videoVolume;
 	var videoStarttime = data.videoStarttime || 0;
-	
+
 	// Get time in milliseconds to use as class name.
 	var d = new Date();
 	var divClass = d.getTime();
@@ -46,6 +46,13 @@ function showVideo(data){
 		// Put the div on the page.
 		$('#wrapper').append(videoFinal);
 		$('.'+divClass+'-video').fadeIn('fast');
+
+		// Set starttime for local video file
+		if(videoStarttime){
+			document.getElementById('video-'+divClass).addEventListener('loadedmetadata', function() {
+				this.currentTime = videoStarttime;
+			}, false);
+		}
 
 		// Adjust volume
 		videoVolume = parseInt(videoVolume) / 10;
